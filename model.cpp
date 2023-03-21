@@ -1,12 +1,33 @@
 #include "model.h"
 
 Model* Model::instancePtr = nullptr;
+Model::Model(const QString& dbPath)
+{
+    //Connect to database
+    const QString DRIVER("QSQLITE");
+    if(QSqlDatabase::isDriverAvailable(DRIVER)) {
+        database = QSqlDatabase::addDatabase(DRIVER);
+        database.setDatabaseName(dbPath);
+        if (!database.open())
+        {
+            qWarning() << "ERROR: " << database.lastError().text();
+        }
+        else
+        {
+            createTables();
+        }
+    }
 
+}
 Model *Model::getInstance(const QString& dbPath)
 {
     if (instancePtr == nullptr) {
         instancePtr = new Model(dbPath);
     }
+    return instancePtr;
+}
+Model *Model::getInstance()
+{
     return instancePtr;
 }
 bool Model::executeQuery(QSqlQuery query) {
@@ -46,26 +67,4 @@ void Model::createTables()
                                "course TEXT, "
                                "password TEXT)"));
     }
-}
-
-Model::Model(const QString& dbPath)
-{
-    const QString DRIVER("QSQLITE");
-    if(QSqlDatabase::isDriverAvailable(DRIVER)) {
-        database = QSqlDatabase::addDatabase(DRIVER);
-        database.setDatabaseName(dbPath);
-        if (!database.open())
-        {
-            qWarning() << "ERROR: " << database.lastError().text();
-        }
-        else
-        {
-            createTables();
-        }
-    }
-
-}
-Model *Model::getInstance()
-{
-    return instancePtr;
 }

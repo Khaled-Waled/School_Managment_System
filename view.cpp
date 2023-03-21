@@ -16,6 +16,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_button_login_clicked()
 {
+    emit LoginAttempt();
     //Check if admin
     //Check if user exists
     //Set user type to the correct one

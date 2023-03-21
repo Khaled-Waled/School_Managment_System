@@ -23,5 +23,8 @@ private:
     Ui::MainWindow *ui;
     void buildLoginScreen();
     Model* model;
+
+signals:
+    void LoginAttempt();
 };
 #endif // MAINWINDOW_H
