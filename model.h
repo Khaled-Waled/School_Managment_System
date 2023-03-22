@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QtSql/QSqlError>
 #include <QSqlQuery>
+#include "DTOs.h"
 
 
 
@@ -20,6 +21,13 @@ private:
 public:
     static Model *getInstance(const QString&);
     static Model *getInstance();
+
+    bool checkIfExists(QString, QString, QString);
+    bool deletePerson(QString, QString);
+    bool addStudent(Student);
+    bool addTeacher(Teacher);
+    Teacher getTeacherByEmail(QString);
+    Student getStudentByEmail(QString);
 };
 
 #endif // MODEL_H

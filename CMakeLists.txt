@@ -16,6 +16,8 @@ set(PROJECT_SOURCES
         main.cpp
 	view.h view.cpp
 	model.h model.cpp
+	controller.h controller.cpp
+	DTOs.h
         mainwindow.ui
 )
 
