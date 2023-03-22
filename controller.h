@@ -10,13 +10,14 @@ class Controller : public QObject
 private:
     Model* model;
     MainWindow* view;
+    USER_TYPE userType;
+    User* user;
 
 public:
     Controller(Model*, MainWindow*);
 
 private slots:
     void handleLogin();
-
 };
 
 #endif // CONTROLLER_H

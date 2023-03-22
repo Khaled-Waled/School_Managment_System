@@ -17,10 +17,29 @@ MainWindow::~MainWindow()
 void MainWindow::on_button_login_clicked()
 {
     emit LoginAttempt();
-    //Check if admin
-    //Check if user exists
-    //Set user type to the correct one
-    //Hide this frame
-    //Show user screen frame
+}
+
+QString MainWindow::getEmailInput()
+{
+    return ui->le_email->text();
+}
+QString MainWindow::getPassInput()
+{
+    return ui->le_password->text();
+}
+
+void MainWindow::hideLoginFrame()
+{
+    ui->frame_login->setDisabled(true);
+    ui->frame_login->hide();
+}
+
+void MainWindow::showErrorMessage(QString title, QString message, QString windowTitle = "Warning")
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(windowTitle);
+    msgBox.setText(title);
+    msgBox.setInformativeText(message);
+    msgBox.exec();
 }
 

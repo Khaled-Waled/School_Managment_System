@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    Model *m = Model::getInstance("school.db");
+    Model *m = Model::getInstance("school2.db");
+    m->initialize();
     Controller c (m,&w);
 
     w.show();

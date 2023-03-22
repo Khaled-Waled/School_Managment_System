@@ -3,6 +3,7 @@
 
 #include "model.h"
 #include <QMainWindow>
+#include <qmessagebox.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,6 +16,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QString getEmailInput();
+    QString getPassInput();
+    void hideLoginFrame();
+    void showUserFrame();
+    void showErrorMessage(QString, QString, QString);
 
 private slots:
     void on_button_login_clicked();
