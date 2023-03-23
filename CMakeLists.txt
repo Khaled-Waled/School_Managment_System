@@ -18,7 +18,8 @@ set(PROJECT_SOURCES
 	model.h model.cpp
 	controller.h controller.cpp
 	DTOs.h
-        mainwindow.ui
+	studentview.h studentview.cpp
+	mainwindow.ui studentview.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
