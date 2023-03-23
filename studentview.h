@@ -2,6 +2,8 @@
 #define STUDENTVIEW_H
 
 #include <QDialog>
+#include "DTOs.h"
+
 
 namespace Ui {
 class StudentView;
@@ -14,9 +16,18 @@ class StudentView : public QDialog
 public:
     explicit StudentView(QWidget *parent = nullptr);
     ~StudentView();
+    void fillStudentData(Student*);
 
 private:
     Ui::StudentView *ui;
+
+signals:
+    void requestStudentData();
+    void changeCourse(QString);
+
+private slots:
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
 };
 
 #endif // STUDENTVIEW_H

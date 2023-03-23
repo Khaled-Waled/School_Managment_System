@@ -25,8 +25,6 @@ void Controller::handleLogin()
         case ADMIN:
         {
             user = new User(username, password, username, password);
-            studentView = new StudentView;
-            studentView->show();
             break;
         }
         case STUDENT:
@@ -34,6 +32,8 @@ void Controller::handleLogin()
             user = model->getStudentByEmail(username);
             studentView = new StudentView;
             studentView->show();
+            QObject::connect(studentView, &StudentView::requestStudentData, this, &Controller::sendStudentDataToView);
+            QObject::connect(studentView, &StudentView::changeCourse, this, &Controller::handleChangeCourse);
             break;
         }
         case TEACHER:
@@ -52,4 +52,16 @@ void Controller::handleLogin()
 
     //Hide this frame
     view->hide();
+}
+
+void Controller::sendStudentDataToView()
+{
+    Student* student = (Student*)user;
+    studentView->fillStudentData(student);
+}
+
+void Controller::handleChangeCourse(QString newCourse)
+{
+    model->changeStudentCourse(user->email,newCourse);
+    user = model->getStudentByEmail(user->email);
 }

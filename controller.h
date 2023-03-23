@@ -20,6 +20,9 @@ public:
 
 private slots:
     void handleLogin();
+    void sendStudentDataToView();
+    void handleChangeCourse(QString);
+
 };
 
 #endif // CONTROLLER_H

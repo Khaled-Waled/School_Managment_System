@@ -36,6 +36,7 @@ public:
     bool editStudent(Student);
     bool editTeacher(Teacher);
     void showAllStudents();
+    void changeStudentCourse(QString, QString);
 };
 
 #endif // MODEL_H

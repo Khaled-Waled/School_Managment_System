@@ -205,7 +205,7 @@ bool Model::addTeacher(Teacher teacher)
 
     QSqlQuery query(database);
 
-    QString str = "INSERT INTO teahers (first_name, last_name, email, age, academic_Background , address, course, password) "
+    QString str = "INSERT INTO teachers (first_name, last_name, email, age, academic_Background , address, course, password) "
                    "VALUES ('%1', '%2', '%3', %4, '%5', '%6', '%7', '%8');";
     str = str.arg(teacher.firstName,
                   teacher.lastName,
@@ -230,11 +230,13 @@ bool Model::addTeacher(Teacher teacher)
 Student* Model::getStudentByEmail(QString email)
 {
     QSqlQuery query;
-    query.prepare("SELECT TOP 1 * FROM students WHERE email = :email;");
-    query.bindValue(":email", email);
+    QString str = "SELECT * FROM students WHERE email = '%1';";
+    str = str.arg(email);
+    query.prepare(str);
 
     Student* student = new Student();
-    if (query.exec())
+
+    if (executeQuery(query))
     {
         query.next();
 
@@ -246,14 +248,15 @@ Student* Model::getStudentByEmail(QString email)
         student->course      = query.value(5).toString();
         student->password    = query.value(6).toString();
     }
-
     return student;
 }
 Teacher* Model::getTeacherByEmail(QString email)
 {
+    QString str = "SELECT * FROM teachers WHERE email = '%1';";
+    str = str.arg(email);
+
     QSqlQuery query;
-    query.prepare("SELECT TOP 1 * FROM teachers WHERE email = :email;");
-    query.bindValue(":email", email);
+    query.prepare(str);
 
     Teacher* teacher;
     if (query.exec())
@@ -296,4 +299,15 @@ void Model::showAllStudents()
             printf("%s\n",query.value(0).toString().toStdString().c_str());
         }
     printf("Done\n");
+}
+
+void Model::changeStudentCourse(QString email, QString newCourse)
+{
+    QString str = ("UPDATE students SET course = '%2' WHERE email = '%1';");
+    str = str.arg(email,newCourse);
+
+    QSqlQuery query;
+    query.prepare(str);
+
+    executeQuery(query);
 }
