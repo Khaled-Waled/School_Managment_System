@@ -6,6 +6,7 @@
 #include <QtSql/QSqlError>
 #include <QSqlQuery>
 #include "DTOs.h"
+#include <iostream>
 
 
 
@@ -17,7 +18,7 @@ private:
     static Model* instancePtr;
     bool createTables();
     bool executeQuery(QSqlQuery);
-    void addDummyUsers();
+    bool addDummyUsers();
 
 public:
     static Model *getInstance(const QString&);

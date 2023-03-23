@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 #include "model.h"
 #include "view.h"
+#include "studentview.h"
 
 
 class Controller : public QObject
@@ -10,6 +11,7 @@ class Controller : public QObject
 private:
     Model* model;
     MainWindow* view;
+    StudentView* studentView;
     USER_TYPE userType;
     User* user;
 

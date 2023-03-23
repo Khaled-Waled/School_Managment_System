@@ -6,7 +6,7 @@ Model::Model(const QString& dbPath)
     //Connect to database
     const QString DRIVER("QSQLITE");
     if(QSqlDatabase::isDriverAvailable(DRIVER)) {
-        database = QSqlDatabase::addDatabase(DRIVER, "MyConnect");
+        database = QSqlDatabase::addDatabase(DRIVER);
         database.setDatabaseName(dbPath);
         database.setHostName("localhost");
         database.setUserName("root");
@@ -21,18 +21,20 @@ Model::Model(const QString& dbPath)
 }
 void Model::initialize()
 {
-    createTables();
-    addDummyUsers();
+    bool created = createTables();
+    printf("Created tables?  %d\n",created);
+    created = addDummyUsers();
+    printf("Created users?  %d\n",created);
 }
-void Model::addDummyUsers()
+bool Model::addDummyUsers()
 {
     Student s1 = Student("John", "doe", "John@doe.com", "1234");
     Student s2 = Student("abc", "cba", "abc@a.com", "4567");
     Student s3 = Student("xyz", "zyx", "xyz@x.com", "8910");
 
-
-    addStudent(s1); addStudent(s2); addStudent(s3);
-    printf("Created users\n");
+    bool status = true;
+    status &= addStudent(s1); status &= addStudent(s2); status &= addStudent(s3);
+    return status;
 }
 Model* Model::getInstance(const QString& dbPath)
 {
@@ -56,31 +58,31 @@ bool Model::executeQuery(QSqlQuery query) {
 bool Model::createTables()
 {
     bool status = true;
+
+    status &= executeQuery(QSqlQuery("DROP TABLE IF EXISTS students;"));
+    status &= executeQuery(QSqlQuery("DROP TABLE IF EXISTS teachers;"));
+
     //Create students table
-    if (!database.tables().contains(QLatin1String("students"))) {
-        status &= executeQuery(QSqlQuery("CREATE TABLE students"
-                               "(first_name TEXT, "
-                               "last_name TEXT, "
-                               "email TEXT PRIMARY KEY, "
-                               "gender INTEGER, "
-                               "age INTEGER, "
-                               "course TEXT, "
-                               "password TEXT)"));
-    }
+    status &= executeQuery(QSqlQuery("CREATE TABLE IF NOT EXISTS students"
+                           "(first_name TEXT, "
+                           "last_name TEXT, "
+                           "email TEXT PRIMARY KEY, "
+                           "gender INTEGER, "
+                           "age INTEGER, "
+                           "course TEXT, "
+                           "password TEXT)"));
 
     //Create teachers table
-    if (!database.tables().contains(QLatin1String("teachers"))) {
-        status &= executeQuery(QSqlQuery("CREATE TABLE teachers"
-                               "(first_name TEXT, "
-                               "last_name TEXT, "
-                               "email TEXT UNIQUE PRIMARY KEY, "
-                               "gender INTEGER, "
-                               "age INTEGER, "
-                               "academic_Background TEXT, "
-                               "address TEXT, "
-                               "course TEXT, "
-                               "password TEXT)"));
-    }
+    status &= executeQuery(QSqlQuery("CREATE TABLE IF NOT EXISTS teachers"
+                           "(first_name TEXT, "
+                           "last_name TEXT, "
+                           "email TEXT UNIQUE PRIMARY KEY, "
+                           "gender INTEGER, "
+                           "age INTEGER, "
+                           "academic_Background TEXT, "
+                           "address TEXT, "
+                           "course TEXT, "
+                           "password TEXT)"));
     return status;
 }
 bool Model::checkIfExists(QString email, QString password, QString table = "students")
@@ -169,30 +171,24 @@ bool Model::addStudent(Student student)
     bool success = false;
 
     QSqlQuery query(database);
-    /*
-    query.prepare("INSERT INTO students (first_name, last_name, email, age, course, password) "
-                  "VALUES (':first_name', ':last_name', ':email', ':age', ':course', ':password');");
-    query.bindValue(":first_name", student.firstName);
-    query.bindValue(":last_name",student.lastName);
-    query.bindValue(":email",student.email);
-    query.bindValue(":age" ,QString::fromStdString(std::to_string(student.age)));
-    query.bindValue(":course", student.course);
-    query.bindValue(":password", student.password);
-    */
 
-    query.prepare("INSERT INTO students (first_name, last_name, email, age, course, password) "
-                  "VALUES (?,?,?,?,?,?);");
-    query.addBindValue(student.firstName);
-    query.addBindValue(student.lastName);
-    query.addBindValue(student.email);
-    query.addBindValue(QString::fromStdString(std::to_string(student.age)));
-    query.addBindValue(student.course);
-    query.addBindValue(student.password);
+    QString str = "INSERT INTO students (first_name, last_name, email, age, course, password) "
+                   "VALUES ('%1', '%2', '%3', %4, '%5', '%6');";
+    str = str.arg(student.firstName,
+                  student.lastName,
+                  student.email,
+                  QString::fromStdString(std::to_string(student.age)),
+                  student.course,
+                  student.password);
+    query.prepare(str);
 
     try {
         success = executeQuery(query);
-//        printf("%s %d\n",student.email.toStdString().c_str(), success);
-//        printf("%s %d\n",query.lastQuery().toStdString().c_str(), success);
+//        printf("%s %s %d\n",student.email.toStdString().c_str(), student.firstName.toStdString().c_str(), success);
+//        printf("%s\n",query.lastQuery().toStdString().c_str());
+//        printf("%s\n",query.lastError().text().toStdString().c_str());
+//        printf("QT:%d  SQLite:%d\n",query.boundValues().count(),-1);
+//        printf("\n###################\n");
     } catch (...) {
         qWarning() << "ERROR: " << database.lastError().text();
     }
@@ -202,17 +198,22 @@ bool Model::addTeacher(Teacher teacher)
 {
     //TODO re-add gender
     bool success = false;
+
     QSqlQuery query(database);
-    query.prepare("INSERT INTO teachers (first_name, last_name, email, age, academic_Background, address, course, password)"
-                  "VALUES (':first_name', ':last_name', :email, :age, ':backg' ,':address',':course', ':password');");
-    query.bindValue(":first_name", teacher.firstName);
-    query.bindValue(":last_name",teacher.lastName);
-    query.bindValue(":email",teacher.email);
-    query.bindValue(":age" ,QString::fromStdString(std::to_string(teacher.age)));
-    query.bindValue(":backg", teacher.background);
-    query.bindValue(":address", teacher.address);
-    query.bindValue(":course", teacher.course);
-    query.bindValue(":password", teacher.password);
+
+    QString str = "INSERT INTO teahers (first_name, last_name, email, age, academic_Background , address, course, password) "
+                   "VALUES ('%1', '%2', '%3', %4, '%5', '%6', '%7', '%8');";
+    str = str.arg(teacher.firstName,
+                  teacher.lastName,
+                  teacher.email,
+                  QString::fromStdString(std::to_string(teacher.age)),
+                  teacher.background,
+                  teacher.address,
+                  teacher.course,
+                  teacher.password);
+
+    query.prepare(str);
+
 
     try {
         success = executeQuery(query);

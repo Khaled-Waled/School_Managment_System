@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "model.h"
 #include <QMainWindow>
 #include <qmessagebox.h>
 
@@ -28,7 +27,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void buildLoginScreen();
-    Model* model;
 
 signals:
     void LoginAttempt();

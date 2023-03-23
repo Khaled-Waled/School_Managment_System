@@ -10,8 +10,6 @@ Controller::Controller(Model* m, MainWindow* v)
 
 void Controller::handleLogin()
 {
-    model->showAllStudents();
-    return;
     printf("logging in...\n");
 
     //Get data from view
@@ -20,18 +18,22 @@ void Controller::handleLogin()
 
     //Get type of user
     userType = model->getTypeOfUser(username, password);
-
+    printf("name: %s\nPassword: %s", username.toStdString().c_str(), password.toStdString().c_str());
     //Get user data
     switch(userType)
     {
         case ADMIN:
         {
             user = new User(username, password, username, password);
+            studentView = new StudentView;
+            studentView->show();
             break;
         }
         case STUDENT:
         {
             user = model->getStudentByEmail(username);
+            studentView = new StudentView;
+            studentView->show();
             break;
         }
         case TEACHER:
@@ -49,8 +51,5 @@ void Controller::handleLogin()
     }
 
     //Hide this frame
-    view->hideLoginFrame();
-
-    //Show user screen frame
-
+    view->hide();
 }
