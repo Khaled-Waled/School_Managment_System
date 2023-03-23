@@ -18,7 +18,7 @@ void Controller::handleLogin()
 
     //Get type of user
     userType = model->getTypeOfUser(username, password);
-    printf("name: %s\nPassword: %s", username.toStdString().c_str(), password.toStdString().c_str());
+    printf("name: %s\nPassword: %s\n", username.toStdString().c_str(), password.toStdString().c_str());
     //Get user data
     switch(userType)
     {

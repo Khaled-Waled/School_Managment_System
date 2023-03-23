@@ -31,9 +31,10 @@ bool Model::addDummyUsers()
     Student s1 = Student("John", "doe", "John@doe.com", "1234");
     Student s2 = Student("abc", "cba", "abc@a.com", "4567");
     Student s3 = Student("xyz", "zyx", "xyz@x.com", "8910");
+    Student s4 = Student("a", "b", "aa", "123");
 
     bool status = true;
-    status &= addStudent(s1); status &= addStudent(s2); status &= addStudent(s3);
+    status &= addStudent(s1); status &= addStudent(s2); status &= addStudent(s3); status &= addStudent(s4);
     return status;
 }
 Model* Model::getInstance(const QString& dbPath)
@@ -88,11 +89,11 @@ bool Model::createTables()
 bool Model::checkIfExists(QString email, QString password, QString table = "students")
 {
     bool exists = false;
-    QSqlQuery query;
-    query.prepare("SELECT email FROM (:table) WHERE email = (:email) AND password = (:password)");
-    query.bindValue(":table", table);
-    query.bindValue(":email", email);
-    query.bindValue(":password", password);
+    QSqlQuery query(database);
+    QString str = "SELECT email FROM %3 WHERE email = '%1' AND password = '%2'";
+    str = str.arg(email,password, table);
+
+    query.prepare(str);
 
     if (query.exec())
     {
@@ -101,16 +102,20 @@ bool Model::checkIfExists(QString email, QString password, QString table = "stud
            return true;
         }
     }
+//    printf("%s %s %d\n",email.toStdString().c_str(), password.toStdString().c_str(), exists);
+//    printf("%s\n",query.lastQuery().toStdString().c_str());
+//    printf("%s\n",query.lastError().text().toStdString().c_str());
 
     return exists;
 }
 bool Model::checkIfExists(QString email, QString table = "students")
 {
     bool exists = false;
-    QSqlQuery query;
-    query.prepare("SELECT email FROM (:table) WHERE email = (:email)");
-    query.bindValue(":table", table);
-    query.bindValue(":email", email);
+    QSqlQuery query(database);
+    QString str = "SELECT email FROM %3 WHERE email = '%1'";
+    str = str.arg(email, table);
+
+    query.prepare(str);
 
     if (query.exec())
     {
@@ -119,7 +124,6 @@ bool Model::checkIfExists(QString email, QString table = "students")
            return true;
         }
     }
-
     return exists;
 }
 USER_TYPE Model::getTypeOfUser(QString email, QString password)
@@ -139,7 +143,7 @@ USER_TYPE Model::getTypeOfUser(QString email, QString password)
         }
         else
         {
-            //Check if user exists as a student
+            //Check if user exists as a teachers
             bool is_teacher = checkIfExists(email, password, "teachers");
             if(is_teacher)
             {
