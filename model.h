@@ -19,6 +19,7 @@ private:
     bool createTables();
     bool executeQuery(QSqlQuery);
     bool addDummyUsers();
+    std::vector<QString> getAllEmails(QString);
 
 public:
     static Model *getInstance(const QString&);
@@ -35,8 +36,9 @@ public:
     Student* getStudentByEmail(QString);
     bool editStudent(Student);
     bool editTeacher(Teacher);
-    void showAllStudents();
     void changeStudentCourse(QString, QString);
+    std::vector<Student> getAllStudents();
+    std::vector<Teacher> getAllTeachers();
 };
 
 #endif // MODEL_H

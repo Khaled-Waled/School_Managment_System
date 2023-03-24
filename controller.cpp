@@ -105,4 +105,10 @@ void Controller::createAdminView()
     adminView = new AdminView();
     adminView->show();
     QObject::connect(adminView, &AdminView::requestLogout, this, &Controller::handleLogout);
+    QObject::connect(adminView, &AdminView::requestAllStudents, [this](){
+        adminView->placeUsersInTable(model->getAllStudents());
+    });
+    QObject::connect(adminView, &AdminView::requestAllTeachers, [this](){
+        adminView->placeUsersInTable(model->getAllTeachers());
+    });
 }

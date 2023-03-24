@@ -297,20 +297,6 @@ bool Model::editTeacher(Teacher teacher)
     return false;
 }
 
-void Model::showAllStudents()
-{
-    QSqlQuery query(database);
-    query.prepare("Select * from students");
-
-    query.exec();
-        printf("Start...\n");
-        while (query.next())
-        {
-            printf("%s\n",query.value(0).toString().toStdString().c_str());
-        }
-    printf("Done\n");
-}
-
 void Model::changeStudentCourse(QString email, QString newCourse)
 {
     QString str = ("UPDATE students SET course = '%2' WHERE email = '%1';");
@@ -320,4 +306,52 @@ void Model::changeStudentCourse(QString email, QString newCourse)
     query.prepare(str);
 
     executeQuery(query);
+}
+
+std::vector<QString> Model::getAllEmails(QString table)
+{
+    std::vector<QString> result;
+    QSqlQuery query(database);
+    query.prepare(QString("Select email from %1").arg(table));
+    executeQuery(query);
+
+    while (query.next())
+    {
+        result.push_back(query.value(0).toString());
+    }
+    return result;
+}
+
+
+std::vector<Student> Model::getAllStudents()
+{
+
+    std::vector<QString> emails = getAllEmails("students");
+    std::vector<Student> result{};
+
+    for(const auto &email: emails)
+    {
+        Student* ptr = getStudentByEmail(email);
+        Student student = Student(*ptr);
+        delete(ptr);
+        result.push_back(student);
+    }
+
+    return result;
+}
+
+std::vector<Teacher> Model::getAllTeachers()
+{
+    std::vector<QString> emails = getAllEmails("teachers");
+    std::vector<Teacher> result{};
+
+    for(const auto &email: emails)
+    {
+        Teacher* ptr = getTeacherByEmail(email);
+        Teacher teacher = Teacher(*ptr);
+        delete(ptr);
+        result.push_back(teacher);
+    }
+
+    return result;
 }
