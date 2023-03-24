@@ -28,13 +28,23 @@ void Model::initialize()
 }
 bool Model::addDummyUsers()
 {
+    bool status = true;
+
+    //add dummy students
     Student s1 = Student("John", "doe", "John@doe.com", "1234");
     Student s2 = Student("abc", "cba", "abc@a.com", "4567");
     Student s3 = Student("xyz", "zyx", "xyz@x.com", "8910");
     Student s4 = Student("a", "b", "aa", "123");
-
-    bool status = true;
     status &= addStudent(s1); status &= addStudent(s2); status &= addStudent(s3); status &= addStudent(s4);
+
+
+    //add dummy teachers
+    Teacher t1 = Teacher("Teacher_1", "One", "t1@t.com", "Made");
+    Teacher t2 = Teacher("Teacher__2", "Two", "t2@t.com", "By");
+    Teacher t3 = Teacher("Teacher_3", "Three", "t3@t.com", "Khaled-Waled");
+    Teacher t4 = Teacher("Tester", "Three", "t", "123");
+    status &= addTeacher(t1); status &= addTeacher(t2); status &= addTeacher(t3); status &= addTeacher(t4);
+
     return status;
 }
 Model* Model::getInstance(const QString& dbPath)
@@ -258,8 +268,8 @@ Teacher* Model::getTeacherByEmail(QString email)
     QSqlQuery query;
     query.prepare(str);
 
-    Teacher* teacher;
-    if (query.exec())
+    Teacher* teacher = new Teacher();
+    if (executeQuery(query))
     {
         query.next();
 

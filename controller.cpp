@@ -40,6 +40,8 @@ void Controller::handleLogin()
         case TEACHER:
         {
             user = model->getTeacherByEmail(username);
+            printf("a teacher signed in...\n");
+            return; //TODO add teacher view
             break;
         }
         default:
