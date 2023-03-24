@@ -66,12 +66,38 @@ void Controller::createStudentView()
     QObject::connect(studentView, &StudentView::requestLogout, this, &Controller::handleLogout);
 }
 
+void Controller::createAdminView()
+{
+    adminView = new AdminView();
+    adminView->show();
+    QObject::connect(adminView, &AdminView::requestLogout, this, &Controller::handleLogout);
+    QObject::connect(adminView, &AdminView::requestAllStudents, [this](){
+        adminView->placeUsersInTable(model->getAllStudents());
+    });
+    QObject::connect(adminView, &AdminView::requestAllTeachers, [this](){
+        adminView->placeUsersInTable(model->getAllTeachers());
+    });
+}
+
+void Controller::createTeacherView()
+{
+    teacherView = new TeacherView();
+    teacherView->show();
+    sendTeacherDataToView();
+    teacherView->fillStudentsTable(model->getStudentsWithCourse(user->course));
+    QObject::connect(teacherView, &TeacherView::requestLogout, this, &Controller::handleLogout);
+    QObject::connect(teacherView, &TeacherView::requestTeacherData, this, &Controller::sendTeacherDataToView);
+}
 void Controller::sendStudentDataToView()
 {
     Student* student = (Student*)user;
     studentView->fillStudentData(student);
 }
-
+void Controller::sendTeacherDataToView()
+{
+    Teacher* teacher = (Teacher*)user;
+    teacherView->fillTeacherData(teacher);
+}
 void Controller::handleChangeCourse(QString newCourse)
 {
     model->changeStudentCourse(user->email,newCourse);
@@ -103,24 +129,4 @@ void Controller::handleLogout()
     studentView = nullptr;
     adminView   = nullptr;
     teacherView = nullptr;
-}
-
-void Controller::createAdminView()
-{
-    adminView = new AdminView();
-    adminView->show();
-    QObject::connect(adminView, &AdminView::requestLogout, this, &Controller::handleLogout);
-    QObject::connect(adminView, &AdminView::requestAllStudents, [this](){
-        adminView->placeUsersInTable(model->getAllStudents());
-    });
-    QObject::connect(adminView, &AdminView::requestAllTeachers, [this](){
-        adminView->placeUsersInTable(model->getAllTeachers());
-    });
-}
-
-void Controller::createTeacherView()
-{
-    teacherView = new TeacherView();
-    teacherView->show();
-    QObject::connect(teacherView, &TeacherView::requestLogout, this, &Controller::handleLogout);
 }

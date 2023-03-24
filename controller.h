@@ -29,6 +29,7 @@ private slots:
     void handleLogin();
     void handleLogout();
     void sendStudentDataToView();
+    void sendTeacherDataToView();
     void handleChangeCourse(QString);
 
 };

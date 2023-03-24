@@ -39,6 +39,7 @@ public:
     void changeStudentCourse(QString, QString);
     std::vector<Student> getAllStudents();
     std::vector<Teacher> getAllTeachers();
+    std::vector<Student> getStudentsWithCourse(QString);
 };
 
 #endif // MODEL_H

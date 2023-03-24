@@ -355,3 +355,29 @@ std::vector<Teacher> Model::getAllTeachers()
 
     return result;
 }
+
+std::vector<Student> Model::getStudentsWithCourse(QString course)
+{
+    std::vector<Student> result;
+    QSqlQuery query(database);
+    query.prepare(QString("Select * from %1 where course = '%2'").arg("students", course));
+    executeQuery(query);
+
+    while (query.next())
+    {
+        Student* ptr = new Student();
+
+        ptr->firstName   = query.value(0).toString();
+        ptr->lastName    = query.value(1).toString();
+        ptr->email       = query.value(2).toString();
+        ptr->gender      = true;
+        ptr->age         = std::atoi(query.value(4).toString().toStdString().c_str());
+        ptr->course      = query.value(5).toString();
+        ptr->password    = query.value(6).toString();
+
+        Student student = Student(*ptr);
+        delete(ptr);
+        result.push_back(student);
+    }
+    return result;
+}
