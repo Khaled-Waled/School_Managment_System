@@ -32,8 +32,10 @@ void Controller::handleLogin()
             user = model->getStudentByEmail(username);
             studentView = new StudentView;
             studentView->show();
+            sendStudentDataToView();
             QObject::connect(studentView, &StudentView::requestStudentData, this, &Controller::sendStudentDataToView);
             QObject::connect(studentView, &StudentView::changeCourse, this, &Controller::handleChangeCourse);
+            QObject::connect(studentView, &StudentView::requestLogout, this, &Controller::handleLogout);
             break;
         }
         case TEACHER:
@@ -64,4 +66,12 @@ void Controller::handleChangeCourse(QString newCourse)
 {
     model->changeStudentCourse(user->email,newCourse);
     user = model->getStudentByEmail(user->email);
+}
+
+void Controller::handleLogout()
+{
+    view->show();
+    studentView->close();
+    delete(studentView);
+    delete(user);
 }

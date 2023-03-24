@@ -44,3 +44,9 @@ void StudentView::on_pushButton_2_clicked()
     emit changeCourse(newCourse);
 }
 
+
+void StudentView::on_button_logout_clicked()
+{
+    emit requestLogout();
+}
+

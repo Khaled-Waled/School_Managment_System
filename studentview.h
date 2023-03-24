@@ -24,10 +24,12 @@ private:
 signals:
     void requestStudentData();
     void changeCourse(QString);
+    void requestLogout();
 
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
+    void on_button_logout_clicked();
 };
 
 #endif // STUDENTVIEW_H

@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->le_password->setEchoMode(QLineEdit::Password);
+    this->setWindowTitle("Login");
 }
 
 MainWindow::~MainWindow()

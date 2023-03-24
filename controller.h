@@ -20,6 +20,7 @@ public:
 
 private slots:
     void handleLogin();
+    void handleLogout();
     void sendStudentDataToView();
     void handleChangeCourse(QString);
 
