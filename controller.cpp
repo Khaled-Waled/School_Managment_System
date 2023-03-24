@@ -5,6 +5,9 @@ Controller::Controller(Model* m, MainWindow* v)
     this->model = m;
     this->view = v;
 
+    studentView = nullptr;
+    adminView   = nullptr;
+
     connect(v, &MainWindow::LoginAttempt, this, &Controller::handleLogin);
 }
 
@@ -25,17 +28,13 @@ void Controller::handleLogin()
         case ADMIN:
         {
             user = new User(username, password, username, password);
+            createAdminView();
             break;
         }
         case STUDENT:
         {
             user = model->getStudentByEmail(username);
-            studentView = new StudentView;
-            studentView->show();
-            sendStudentDataToView();
-            QObject::connect(studentView, &StudentView::requestStudentData, this, &Controller::sendStudentDataToView);
-            QObject::connect(studentView, &StudentView::changeCourse, this, &Controller::handleChangeCourse);
-            QObject::connect(studentView, &StudentView::requestLogout, this, &Controller::handleLogout);
+            createStudentView();
             break;
         }
         case TEACHER:
@@ -56,6 +55,16 @@ void Controller::handleLogin()
     view->hide();
 }
 
+void Controller::createStudentView()
+{
+    studentView = new StudentView;
+    studentView->show();
+    sendStudentDataToView();
+    QObject::connect(studentView, &StudentView::requestStudentData, this, &Controller::sendStudentDataToView);
+    QObject::connect(studentView, &StudentView::changeCourse, this, &Controller::handleChangeCourse);
+    QObject::connect(studentView, &StudentView::requestLogout, this, &Controller::handleLogout);
+}
+
 void Controller::sendStudentDataToView()
 {
     Student* student = (Student*)user;
@@ -71,7 +80,27 @@ void Controller::handleChangeCourse(QString newCourse)
 void Controller::handleLogout()
 {
     view->show();
-    studentView->close();
-    delete(studentView);
-    delete(user);
+    if(studentView)
+    {
+        studentView->close();
+        delete(studentView);
+    }
+    if(adminView)
+    {
+        adminView->close();
+        delete(adminView);
+    }
+    if(user)
+    {
+        delete(user);
+    }
+    studentView = nullptr;
+    adminView   = nullptr;
+}
+
+void Controller::createAdminView()
+{
+    adminView = new AdminView();
+    adminView->show();
+    QObject::connect(adminView, &AdminView::requestLogout, this, &Controller::handleLogout);
 }

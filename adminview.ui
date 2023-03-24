@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminView</class>
+ <widget class="QWidget" name="AdminView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>1211</width>
+     <height>641</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="4" column="0">
+     <widget class="QPushButton" name="button_refresh_teachers">
+      <property name="text">
+       <string>Refresh table</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="button_remove_teacher">
+      <property name="text">
+       <string>Remove selected teachers</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="4">
+     <widget class="QLabel" name="label_title">
+      <property name="font">
+       <font>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Admin Screen</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_teachers_title">
+      <property name="text">
+       <string>Teacher operations</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLabel" name="label_student_title">
+      <property name="text">
+       <string>Student oprations</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QTableWidget" name="tableWidget_students"/>
+    </item>
+    <item row="5" column="1">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="3">
+     <widget class="QPushButton" name="button_refresh_students">
+      <property name="text">
+       <string>Refresh table</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QPushButton" name="button_add_student">
+      <property name="text">
+       <string>Add student</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="button_add_teaher">
+      <property name="text">
+       <string>Add teacher</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QTableWidget" name="tableWidget_teachers"/>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="button_remove_student">
+      <property name="text">
+       <string>Remove selected students</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="button_logout">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>680</y>
+     <width>80</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;--  Log out</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

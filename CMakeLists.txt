@@ -19,6 +19,7 @@ set(PROJECT_SOURCES
 	controller.h controller.cpp
 	DTOs.h
 	studentview.h studentview.cpp
+	adminview.h adminview.cpp adminview.ui
 	mainwindow.ui studentview.ui
 )
 

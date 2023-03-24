@@ -14,8 +14,6 @@ StudentView::StudentView(QWidget *parent) :
     ui->le_age->setDisabled(true);
 
     setWindowTitle("Student details");
-
-    emit requestStudentData();
 }
 
 StudentView::~StudentView()
