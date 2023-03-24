@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "DTOs.h"
 #include <vector>
+#include <QInputDialog>
 
 namespace Ui {
 class AdminView;
@@ -28,12 +29,16 @@ signals:
     void requestLogout();
     void requestAllStudents();
     void requestAllTeachers();
+    void requestDeleteTeacher(QString);
+    void requestDeleteStudent(QString);
 
 private slots:
     void on_pushButton_clicked();
     void on_button_logout_clicked();
     void on_button_refresh_students_clicked();
     void on_button_refresh_teachers_clicked();
+    void on_button_remove_teacher_clicked();
+    void on_button_remove_student_clicked();
 };
 
 #endif // ADMINVIEW_H

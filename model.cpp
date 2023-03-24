@@ -167,9 +167,7 @@ bool Model::deletePerson(QString email, QString table)
 {
     bool success = false;
     QSqlQuery query;
-    query.prepare("DELETE FROM :table WHERE email = :email;");
-    query.bindValue(":table", table);
-    query.bindValue(":email", email);
+    query.prepare(QString("DELETE FROM %1 WHERE email = '%2';").arg(table, email));
     if (query.exec())
     {
         if (query.next())

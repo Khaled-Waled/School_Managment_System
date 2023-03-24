@@ -7,6 +7,7 @@ Controller::Controller(Model* m, MainWindow* v)
 
     studentView = nullptr;
     adminView   = nullptr;
+    teacherView = nullptr;
 
     connect(v, &MainWindow::LoginAttempt, this, &Controller::handleLogin);
 }
@@ -71,6 +72,14 @@ void Controller::createAdminView()
     adminView = new AdminView();
     adminView->show();
     QObject::connect(adminView, &AdminView::requestLogout, this, &Controller::handleLogout);
+    QObject::connect(adminView, &AdminView::requestDeleteStudent, [this](QString email){
+        model->deletePerson(email,"students");
+        adminView->placeUsersInTable(model->getAllStudents());
+    });
+    QObject::connect(adminView, &AdminView::requestDeleteTeacher, [this](QString email){
+        model->deletePerson(email,"teachers");
+        adminView->placeUsersInTable(model->getAllTeachers());
+    });
     QObject::connect(adminView, &AdminView::requestAllStudents, [this](){
         adminView->placeUsersInTable(model->getAllStudents());
     });

@@ -40,7 +40,7 @@
     <item row="5" column="0">
      <widget class="QPushButton" name="button_remove_teacher">
       <property name="text">
-       <string>Remove selected teachers</string>
+       <string>Remove a teacher</string>
       </property>
      </widget>
     </item>
@@ -137,7 +137,7 @@
     <item row="5" column="5">
      <widget class="QPushButton" name="button_remove_student">
       <property name="text">
-       <string>Remove selected students</string>
+       <string>Remove a student</string>
       </property>
      </widget>
     </item>
