@@ -4,6 +4,7 @@
 #include "view.h"
 #include "studentview.h"
 #include "adminview.h"
+#include "teacherview.h"
 
 
 class Controller : public QObject
@@ -14,10 +15,12 @@ private:
     MainWindow* view;
     StudentView* studentView;
     AdminView* adminView;
+    TeacherView* teacherView;
     USER_TYPE userType;
     User* user;
     void createStudentView();
     void createAdminView();
+    void createTeacherView();
 
 public:
     Controller(Model*, MainWindow*);

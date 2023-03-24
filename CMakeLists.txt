@@ -20,6 +20,7 @@ set(PROJECT_SOURCES
 	DTOs.h
 	studentview.h studentview.cpp
 	adminview.h adminview.cpp adminview.ui
+	teacherview.h teacherview.cpp teacherview.ui
 	mainwindow.ui studentview.ui
 )
 

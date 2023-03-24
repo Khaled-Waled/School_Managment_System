@@ -40,8 +40,7 @@ void Controller::handleLogin()
         case TEACHER:
         {
             user = model->getTeacherByEmail(username);
-            printf("a teacher signed in...\n");
-            return; //TODO add teacher view
+            createTeacherView();
             break;
         }
         default:
@@ -92,12 +91,18 @@ void Controller::handleLogout()
         adminView->close();
         delete(adminView);
     }
+    if(teacherView)
+    {
+        teacherView->close();
+        delete(teacherView);
+    }
     if(user)
     {
         delete(user);
     }
     studentView = nullptr;
     adminView   = nullptr;
+    teacherView = nullptr;
 }
 
 void Controller::createAdminView()
@@ -111,4 +116,11 @@ void Controller::createAdminView()
     QObject::connect(adminView, &AdminView::requestAllTeachers, [this](){
         adminView->placeUsersInTable(model->getAllTeachers());
     });
+}
+
+void Controller::createTeacherView()
+{
+    teacherView = new TeacherView();
+    teacherView->show();
+    QObject::connect(teacherView, &TeacherView::requestLogout, this, &Controller::handleLogout);
 }
