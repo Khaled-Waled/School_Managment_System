@@ -34,16 +34,14 @@ bool Model::addDummyUsers()
     Student s1 = Student("John", "doe", "John@doe.com", "1234");
     Student s2 = Student("abc", "cba", "abc@a.com", "4567");
     Student s3 = Student("xyz", "zyx", "xyz@x.com", "8910");
-    Student s4 = Student("a", "b", "aa", "123");
-    status &= addStudent(s1); status &= addStudent(s2); status &= addStudent(s3); status &= addStudent(s4);
+    status &= addStudent(s1); status &= addStudent(s2); status &= addStudent(s3);
 
 
     //add dummy teachers
     Teacher t1 = Teacher("Teacher_1", "One", "t1@t.com", "Made");
     Teacher t2 = Teacher("Teacher__2", "Two", "t2@t.com", "By");
     Teacher t3 = Teacher("Teacher_3", "Three", "t3@t.com", "Khaled-Waled");
-    Teacher t4 = Teacher("Tester", "Three", "t", "123");
-    status &= addTeacher(t1); status &= addTeacher(t2); status &= addTeacher(t3); status &= addTeacher(t4);
+    status &= addTeacher(t1); status &= addTeacher(t2); status &= addTeacher(t3);
 
     return status;
 }
@@ -112,10 +110,6 @@ bool Model::checkIfExists(QString email, QString password, QString table = "stud
            return true;
         }
     }
-//    printf("%s %s %d\n",email.toStdString().c_str(), password.toStdString().c_str(), exists);
-//    printf("%s\n",query.lastQuery().toStdString().c_str());
-//    printf("%s\n",query.lastError().text().toStdString().c_str());
-
     return exists;
 }
 bool Model::checkIfExists(QString email, QString table = "students")
@@ -179,7 +173,6 @@ bool Model::deletePerson(QString email, QString table)
 }
 bool Model::addStudent(Student student)
 {
-    //TODO re-add gender
     bool success = false;
 
     QSqlQuery query(database);
@@ -196,11 +189,6 @@ bool Model::addStudent(Student student)
 
     try {
         success = executeQuery(query);
-//        printf("%s %s %d\n",student.email.toStdString().c_str(), student.firstName.toStdString().c_str(), success);
-//        printf("%s\n",query.lastQuery().toStdString().c_str());
-//        printf("%s\n",query.lastError().text().toStdString().c_str());
-//        printf("QT:%d  SQLite:%d\n",query.boundValues().count(),-1);
-//        printf("\n###################\n");
     } catch (...) {
         qWarning() << "ERROR: " << database.lastError().text();
     }
@@ -208,7 +196,6 @@ bool Model::addStudent(Student student)
 }
 bool Model::addTeacher(Teacher teacher)
 {
-    //TODO re-add gender
     bool success = false;
 
     QSqlQuery query(database);
@@ -251,7 +238,7 @@ Student* Model::getStudentByEmail(QString email)
         student->firstName   = query.value(0).toString();
         student->lastName    = query.value(1).toString();
         student->email       = query.value(2).toString();
-        student->gender      = true; //TODO assign actual value
+        student->gender      = true;
         student->age         = std::atoi(query.value(4).toString().toStdString().c_str());
         student->course      = query.value(5).toString();
         student->password    = query.value(6).toString();
@@ -274,7 +261,7 @@ Teacher* Model::getTeacherByEmail(QString email)
         teacher->firstName   = query.value(0).toString();
         teacher->lastName    = query.value(1).toString();
         teacher->email       = query.value(2).toString();
-        teacher->gender      = true; //TODO assign actual value
+        teacher->gender      = true;
         teacher->age         = std::atoi(query.value(4).toString().toStdString().c_str());
         teacher->course      = query.value(5).toString();
         teacher->background  = query.value(6).toString();

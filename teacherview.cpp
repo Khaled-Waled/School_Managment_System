@@ -50,6 +50,6 @@ void TeacherView::placeStudentInTable(Student student)
 
 void TeacherView::fillStudentsTable(std::vector<Student> students)
 {
-    for(auto student: students)
+    for(const auto &student: students)
         placeStudentInTable(student);
 }
