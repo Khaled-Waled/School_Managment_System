@@ -6,7 +6,7 @@ TeacherView::TeacherView(QWidget *parent) :
     ui(new Ui::TeacherView)
 {
     ui->setupUi(this);
-    setWindowTitle("Student details");
+    setWindowTitle("Teacher details");
 
     ui->le_fname->setDisabled(true);
     ui->le_lname->setDisabled(true);

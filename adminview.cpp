@@ -6,6 +6,7 @@ AdminView::AdminView(QWidget *parent) :
     ui(new Ui::AdminView)
 {
     ui->setupUi(this);
+    setWindowTitle("Admin interface");
 
     //Setup table headers
     ui->tableWidget_students->setColumnCount(4);
